@@ -1,17 +1,9 @@
-
-import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import os
 import socket
 import pytest
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.remote.webdriver import WebDriver
-from faker import Faker
-import os
 from pathlib import Path
-
 from data.test_data import generate_user_data, generate_recipe_data
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
@@ -28,6 +20,7 @@ def base_url():
 def selenium_url():
     """URL для Selenoid"""
     return os.getenv("SELENOID_URL", "http://selenoid:4444/wd/hub")
+
 
 def is_selenoid_running():
     """Проверяет, запущен ли Selenoid"""
