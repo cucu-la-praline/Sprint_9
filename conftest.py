@@ -3,7 +3,6 @@ import socket
 import pytest
 
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from pathlib import Path
@@ -36,22 +35,19 @@ def is_selenoid_running():
 
 @pytest.fixture(scope="function")
 def browser():
-    """Фикстура браузера"""
+    """Фикстура браузера - использует Selenium Manager (встроенный в Selenium 4)"""
     options = Options()
     options.add_argument("--window-size=1920,1080")
-    options.add_argument("--headless=new")  # Headless режим для CI
+    options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
-    options.add_argument("--remote-debugging-port=9222")
 
-    # Автоматически скачивает совместимую версию ChromeDriver
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+    # Selenium 4 автоматически скачивает и управляет ChromeDriver
+    driver = webdriver.Chrome(options=options)
 
     yield driver
     driver.quit()
-
 
 @pytest.fixture
 def registered_user(browser, base_url):

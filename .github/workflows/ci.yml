@@ -18,11 +18,23 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Chrome
+      - name: Install Chrome and ChromeDriver
         run: |
           sudo apt-get update
+          sudo apt-get install -y wget unzip
+          
+          # Устанавливаем Chrome
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
           sudo apt-get install -y google-chrome-stable
+          
+          # Устанавливаем ChromeDriver через apt
+          sudo apt-get install -y chromium-chromedriver
+          
+          # Проверяем версии
           google-chrome --version
+          chromedriver --version
 
       - name: Install dependencies
         run: |
@@ -32,15 +44,16 @@ jobs:
       - name: Run tests
         run: |
           pytest tests/ -v --alluredir=allure-results
+        env:
+          # Указываем путь к chromedriver
+          PATH: /usr/lib/chromium-browser:/usr/local/bin:/usr/bin:/bin:$PATH
 
-      # 🔥 Альтернативная установка Allure (через wget)
       - name: Install Allure
         if: always()
         run: |
           wget -q https://github.com/allure-framework/allure2/releases/download/2.24.1/allure-2.24.1.tgz
           tar -xzf allure-2.24.1.tgz -C /opt/
           sudo ln -s /opt/allure-2.24.1/bin/allure /usr/bin/allure
-          allure --version
 
       - name: Generate Allure Report
         if: always()
