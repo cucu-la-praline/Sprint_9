@@ -40,5 +40,6 @@ assets/*.avi
 
 # Selenoid
 config/
+!config.json
 .video/
 .vnc/
