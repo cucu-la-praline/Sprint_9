@@ -1,38 +1,38 @@
 services:
+
   selenoid:
-    image: aerokube/selenoid:latest
+    image: "aerokube/selenoid"
     container_name: selenoid
     ports:
       - "4444:4444"
-    volumes:
-      - ./browser.json:/etc/selenoid/browser.json
-      - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - test-network
+      - selenoid
+    volumes:
+      - "./config.json:/etc/selenoid/config.json"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: ["-conf", "/etc/selenoid/config.json", "-container-network", "selenoid"]
 
   selenoid-ui:
-    image: aerokube/selenoid-ui:latest
+    image: "aerokube/selenoid-ui:latest"
     container_name: selenoid-ui
+    links:
+      - selenoid
     ports:
-      - "8080:8080"
-    depends_on:
-      - selenoid
+      - "8081:8080"
     networks:
-      - test-network
+      - selenoid
+    command: ["--selenoid-uri", "http://selenoid:4444"]
 
-  tests:
+  test_docker:
     build: .
-    container_name: tests
+    container_name: test_docker
     depends_on:
       - selenoid
-    environment:
-      - SELENOID_URL=http://selenoid:4444/wd/hub
-      - BASE_URL=http://web-app:8000
-    volumes:
-      - ./allure-results:/app/allure-results
     networks:
-      - test-network
+      - selenoid
+    tty: true
+    command: ["pytest"]
 
 networks:
-  test-network:
-    driver: bridge
+  selenoid:
+    name: selenoid
