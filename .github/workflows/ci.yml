@@ -8,6 +8,7 @@ on:
   push:
     # Отслеживаем изменения только в ветке master
     branches:
+      - develop
       - master
 # Перечень задач
 jobs:
