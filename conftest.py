@@ -2,20 +2,19 @@ import os
 import socket
 import pytest
 
-from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from pathlib import Path
-from data.test_data import generate_user_data, generate_recipe_data
+from data.data import generate_user_data, generate_recipe_data
+from helpers.config_helpers import get_base_url
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def base_url():
-    """Базовый URL сервиса"""
-    default_url = "https://foodgram-frontend-1.foodgram.education-services.ru/signin"
-    return os.getenv("BASE_URL", default_url)
+    """Фикстура предоставляет базовый URL сервиса."""
+    return get_base_url()
 
 
 @pytest.fixture

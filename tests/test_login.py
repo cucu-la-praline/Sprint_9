@@ -1,6 +1,6 @@
 import allure
 
-from data.test_data import generate_user_data
+from data.data import generate_user_data
 from pages.login_page import LoginPage
 
 

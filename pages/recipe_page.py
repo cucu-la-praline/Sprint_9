@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import allure
 from pathlib import Path
 import os
-from data.test_data import Files
+from data.data import Files
 from pages.base_page import BasePage
 from locators.locators import RecipeLocators
 
