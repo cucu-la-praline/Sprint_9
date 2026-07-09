@@ -1,17 +1,9 @@
 import random
-import glob
-import hashlib
-import os
-from os.path import join
-import pathlib
+
 from pathlib import Path
-
-import allure
-
 from faker import Faker
 
 fake = Faker()
-
 ingredients = ['сахар', 'мука', 'соль', 'карамель', 'сода']
 
 

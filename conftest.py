@@ -5,7 +5,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from pathlib import Path
-from data.data import generate_user_data, generate_recipe_data
+from data.data import generate_user_data
 from helpers.config_helpers import get_base_url
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
@@ -48,6 +48,7 @@ def browser():
     yield driver
     driver.quit()
 
+
 @pytest.fixture
 def registered_user(browser, base_url):
     """Фикстура создания пользователя с автоудалением"""
@@ -85,9 +86,3 @@ def login_user(browser, base_url, registered_user):
 def asset_path():
     """Путь к файлу изображения для тестов"""
     return Path(__file__).parent.parent / "assets" / "test_image.jpg"
-
-
-@pytest.fixture
-def recipe_data():
-    """Данные для создания рецепта"""
-    return generate_recipe_data()
